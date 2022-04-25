@@ -66,6 +66,14 @@ async function run(){
             const result = await serviceCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
+
+        //!---------- Delete one service ------------
+        app.delete('/deleteService/:id', async(req, res)=> {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await serviceCollection.deleteOne(query);
+            res.send(result);
+        })
     }
     finally {
         // await client.close();
