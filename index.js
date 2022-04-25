@@ -33,6 +33,7 @@ async function run(){
             res.send(services);
         })
 
+        //!------- Show one service details---------
         app.get("/services/:id", async(req, res)=>{
             const id = req.params.id;
             const query = {_id:ObjectId(id)};
@@ -44,6 +45,25 @@ async function run(){
             const newService = req.body;
             const result = await serviceCollection.insertOne(newService);
             console.log("new-service added");
+            res.send(result);
+        })
+
+        //!---------- Update one service ------------
+        app.put("/updateService/:id", async(req, res)=> {
+            const {name, price, description, img} = req.body;
+            const id = req.params.id;
+            const filter = { _id : ObjectId(id) };
+            const options = { upsert: true };
+            console.log(name);
+            const updateDoc = {
+                $set: {
+                  name : name,
+                  price: price,
+                  description: description,
+                  img: img
+                },
+            };
+            const result = await serviceCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
     }
